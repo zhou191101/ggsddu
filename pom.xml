@@ -13,5 +13,82 @@
         <module>jvm</module>
     </modules>
 
+    <properties>
+        <scope.value>compile</scope.value>
+        <flink.version>1.8.0</flink.version>
+    </properties>
 
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-scala_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-java</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-streaming-scala_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-streaming-java_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-core -->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-core</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-kafka-0.10_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-statebackend-rocksdb -->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-statebackend-rocksdb_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>0.10.2.0</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+            <!-- log4j support -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.6.6</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
