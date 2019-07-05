@@ -1,5 +1,6 @@
 package com.ggsddu.scala.stream
 
+import com.ggsddu.java.partition.MyPartition
 import com.ggsddu.scala.source.NoParalleSource
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.scala._
