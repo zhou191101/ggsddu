@@ -16,7 +16,7 @@
 
     <properties>
         <scope.value>compile</scope.value>
-        <flink.version>1.8.0</flink.version>
+        <flink.version>1.7.2</flink.version>
     </properties>
 
 
