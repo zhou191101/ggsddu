@@ -2,9 +2,9 @@ package com.ggsddu.udf
 
 import org.apache.spark.sql.api.java.UDF1
 
-class PPXUDF extends UDF1[List[(Double, Int)], (Double, Double)] {
+class PPXUDF extends UDF1[Seq[(Double, Int)], (Double, Double)] {
 
-  override def call(t1: List[(Double, Int)]): (Double, Double) = {
+  override def call(t1: Seq[(Double, Int)]): (Double, Double) = {
 
     if (t1 == null || t1.isEmpty) {
       (0.825234800758695, 0.5)
@@ -25,7 +25,7 @@ class PPXUDF extends UDF1[List[(Double, Int)], (Double, Double)] {
           case 1 => (key, 1 / (1 + Math.exp(value + -1.55222459843)))
           case _ => (key, 1 / (1 + Math.exp(value + 0)))
         }
-      }).toSeq.sortBy(_._1)
+      }).toList.sortBy(_._1)
       (result(0)._2, result(1)._2)
     }
 
