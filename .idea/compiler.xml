@@ -11,11 +11,9 @@
         <module name="flink" />
         <module name="java" />
         <module name="jvm" />
+        <module name="kafka" />
         <module name="spark" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="java" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
