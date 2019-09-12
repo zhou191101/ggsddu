@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="algorithms" />
         <module name="concurrency" />
+        <module name="designpatterns" />
         <module name="flink" />
         <module name="java" />
         <module name="jvm" />
