@@ -18,19 +18,6 @@
         <module>kafka</module>
         <module>design-patterns</module>
     </modules>
-    <repositories>
-        <repository>
-            <id>mob-nexus</id>
-            <url>http://mvn.code.mob.com:8081/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
