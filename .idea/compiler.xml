@@ -6,15 +6,29 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="algorithms" />
-        <module name="concurrency" />
-        <module name="designpatterns" />
         <module name="flink" />
         <module name="java" />
+        <module name="concurrency" />
         <module name="jvm" />
-        <module name="kafka" />
         <module name="spark" />
+        <module name="kafka" />
+        <module name="spring-test" />
+        <module name="design-patterns" />
+        <module name="algorithms" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="algorithms" options="" />
+      <module name="concurrency" options="" />
+      <module name="design-patterns" options="" />
+      <module name="flink" options="" />
+      <module name="java" options="" />
+      <module name="jvm" options="" />
+      <module name="kafka" options="" />
+      <module name="spark" options="" />
+      <module name="spring-test" options="" />
+    </option>
   </component>
 </project>
