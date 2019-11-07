@@ -14,7 +14,7 @@ public class NumLengthRegex {
 
 	public static void main(String[] args) {
 
-		String num1 = "00086018080587865";
+		String num1 = "00000013347205042";
 		String num2 = "00000105613662033";
 		String num3 = "00088600935921609";
 		String num4 = "00085200098623039";
