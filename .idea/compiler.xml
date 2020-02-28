@@ -7,21 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="flink" />
-<<<<<<< Updated upstream
-        <module name="java" />
-=======
         <module name="designpatterns" />
->>>>>>> Stashed changes
         <module name="concurrency" />
         <module name="jvm" />
         <module name="spark" />
         <module name="kafka" />
         <module name="spring-test" />
         <module name="design-patterns" />
-<<<<<<< Updated upstream
-=======
-        <module name="java" />
->>>>>>> Stashed changes
         <module name="algorithms" />
       </profile>
     </annotationProcessing>

@@ -9,6 +9,6 @@ object Converter {
     "JPY" -> Map("USD" -> 0.8257, "EUR" -> 0.6272,
       "JPY" -> 1.0, "CHF" -> 1.018),
     "CHF" -> Map("USD" -> 0.8108, "EUR" -> 0.6160,
-      "JPY" -> 0.982, "CHF" -> 1.0),
+      "JPY" -> 0.982, "CHF" -> 1.0)
   )
 }
