@@ -152,6 +152,14 @@
                 <version>1.6.6</version>
                 <scope>${scope.value}</scope>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
