@@ -5,6 +5,9 @@ import org.apache.spark.sql.{Column, DataFrame}
 
 object ZipTable extends Base {
 
+  def main(args: Array[String]): Unit = {
+    execute(args)
+  }
 
   override def execute(args: Array[String]): Unit = {
     val updateDf = readFromCSV("/Users/zhoupeng/Desktop/hott-20200302", header = true, "\t")
@@ -18,8 +21,8 @@ object ZipTable extends Base {
 
   }
 
-  def main(args: Array[String]): Unit = {
-    execute(args)
+  override def conf(): SparkConf = {
+    new SparkConf().setAppName("zip_table").setMaster("local[1]")
   }
 
   def readFromCSV(path: String, header: Boolean, sep: String): DataFrame = {
@@ -30,7 +33,5 @@ object ZipTable extends Base {
   }
 
 
-  override def conf(): SparkConf = {
-    new SparkConf().setAppName("zip_table").setMaster("local[1]")
-  }
+
 }
