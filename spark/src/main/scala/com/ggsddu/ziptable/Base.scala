@@ -14,7 +14,6 @@ trait Base {
   def writeToZipTable(fullDF: DataFrame, updateDF: DataFrame, primaryKeys: Set[String],
                       endDay: String, write: DataFrame => Unit): Unit = {
 
-    val updateFields = updateDF.schema.fields.map(_.name).toList
     val fullFields = fullDF.schema.fields.map(_.name).toList
 
     updateDF.createOrReplaceTempView("tmp_update")
@@ -33,9 +32,13 @@ trait Base {
          |left join
          |(select ${primaryKeys.mkString(",")} from tmp_update) update_zip
          |on ${primaryKeys.map(key => "tmp_full_update." + key + "=" + "update_zip." + key).mkString(" and ")}
+         |
          |union all
+         |
          |select ${fullFields.mkString(",")} from tmp_full where end_date !='99999999'
+         |
          |union all
+         |
          |select ${fullFields.filter(x => !Set("start_date", "end_date").contains(x)).mkString(",")},
          |    "${endDay}" as start_date,"99999999" as end_date
          |from tmp_update
