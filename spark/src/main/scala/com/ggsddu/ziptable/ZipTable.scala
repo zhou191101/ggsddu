@@ -26,7 +26,7 @@ object ZipTable extends Base {
          |  "full_source_type":"csv",
          |  "full_source_param":{"header":true},
          |  "target":"/Users/zhoupeng/Desktop/full-hott2",
-         |  "target_partitions":{"day":"202000302"},
+         |  "target_partitions":{"day":"202000304"},
          |  "target_type":"csv",
          |  "target_param":{"header":true},
          |  "primary_keys":["combine", "sold_to"],
