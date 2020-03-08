@@ -6,12 +6,20 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object Test extends App {
 
-  val future = Future {
-    Thread.sleep(5000)
-    21 + 21
+  val future1 = Future {
+    var count = 0
+    while (count < 100) {
+      println(Thread.currentThread().getName + "--" + count)
+      count +=1
+    }
   }
-  while (!future.isCompleted) {
-    println(future.value)
+  val future2 = Future {
+    var count = 0
+    while (count < 100) {
+      println(Thread.currentThread().getName + "--" + count)
+      count +=1
+    }
   }
-  println("final " + future.value)
+
+  Thread.sleep(1000)
 }
