@@ -8,10 +8,10 @@ object NoParalleSource extends SourceFunction[Int] {
   private var count = 0
 
   /**
-    *
-    * 启动一个source
-    * 大部分情况下都需要在此方法实现循环
-    **/
+   *
+   * 启动一个source
+   * 大部分情况下都需要在此方法实现循环
+   **/
   override def run(sourceContext: SourceFunction.SourceContext[Int]): Unit = {
     while (isRunning) {
       sourceContext.collect(count)

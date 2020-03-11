@@ -9,12 +9,12 @@ import org.apache.flink.configuration.Configuration;
 
 
 /**
- *
  * 全局累加器
+ *
  * @author zhoup
  */
 public class CounterTest {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         DataSource<String> data = env.fromElements("a", "b", "c", "d");
@@ -26,7 +26,7 @@ public class CounterTest {
             @Override
             public void open(Configuration parameters) throws Exception {
                 super.open(parameters);
-                getRuntimeContext().addAccumulator("num-lines",this.counter);
+                getRuntimeContext().addAccumulator("num-lines", this.counter);
             }
 
             @Override

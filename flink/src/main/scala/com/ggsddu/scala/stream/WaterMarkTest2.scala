@@ -15,9 +15,9 @@ import org.apache.flink.util.Collector
 
 import scala.collection.mutable.ArrayBuffer
 
-object WaterMarkTest2{
+object WaterMarkTest2 {
 
-  def main(args: Array[String]): Unit ={
+  def main(args: Array[String]): Unit = {
 
 
     val env = StreamExecutionEnvironment.getExecutionEnvironment
@@ -36,18 +36,18 @@ object WaterMarkTest2{
     val result = input.map(data => {
       val datas = data.split(",")
       (datas(0), datas(1).toLong)
-    }).assignTimestampsAndWatermarks(new AssignerWithPunctuatedWatermarks[(String, Long)]{
-      override def checkAndGetNextWatermark(lastElement: (String, Long), extractedTimestamp: Long): Watermark ={
-        if(lastElement._2 == 1561719428344L) new Watermark(extractedTimestamp) else null
+    }).assignTimestampsAndWatermarks(new AssignerWithPunctuatedWatermarks[(String, Long)] {
+      override def checkAndGetNextWatermark(lastElement: (String, Long), extractedTimestamp: Long): Watermark = {
+        if (lastElement._2 == 1561719428344L) new Watermark(extractedTimestamp) else null
       }
 
-      override def extractTimestamp(element: (String, Long), previousElementTimestamp: Long): Long ={
+      override def extractTimestamp(element: (String, Long), previousElementTimestamp: Long): Long = {
         element._2
       }
     }).keyBy(0).window(TumblingEventTimeWindows.of(Time.seconds(1)))
-      .apply(new WindowFunction[(String, Long), String, Tuple, TimeWindow]{
+      .apply(new WindowFunction[(String, Long), String, Tuple, TimeWindow] {
         override def apply(key: Tuple, window: TimeWindow, input: Iterable[(String, Long)],
-                           out: Collector[String]): Unit ={
+                           out: Collector[String]): Unit = {
           val list = new ArrayBuffer[Long]
           input.foreach(it => {
             list.append(it._2)

@@ -7,9 +7,9 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time
 
 
-object SocketMerge{
+object SocketMerge {
 
-  def main(args: Array[String]): Unit ={
+  def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime)
     env.setParallelism(1)
@@ -17,15 +17,14 @@ object SocketMerge{
     env.socketTextStream("localhost", 9999)
       .map(x => {
         val lines = x.split(",")
-      (lines(0), Set(lines(1)))
+        (lines(0), Set(lines(1)))
       })
       .keyBy(0)
       .timeWindow(Time.seconds(20))
-      .reduce((a,b)=>{
-          (a._1,a._2 ++ b._2)
-        })
+      .reduce((a, b) => {
+        (a._1, a._2 ++ b._2)
+      })
       .print()
-
 
 
     env.execute()

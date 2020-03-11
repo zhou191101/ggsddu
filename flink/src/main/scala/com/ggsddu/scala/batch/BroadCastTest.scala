@@ -23,7 +23,7 @@ object BroadCastTest {
       Map(x._1 -> x._2)
     })
 
-   // data.print()
+    // data.print()
     val metaData = env.fromElements("zs", "ls", "ww")
 
     metaData.map(new RichMapFunction[String, String] {
@@ -34,8 +34,8 @@ object BroadCastTest {
       override def open(parameters: Configuration): Unit = {
         list = getRuntimeContext.getBroadcastVariable[mutable.Map[String, Int]]("broadcast")
         val iter = list.iterator()
-        while (iter.hasNext){
-          map .++(iter.next())
+        while (iter.hasNext) {
+          map.++(iter.next())
         }
 
       }

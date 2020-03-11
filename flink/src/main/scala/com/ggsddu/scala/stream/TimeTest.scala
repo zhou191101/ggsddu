@@ -8,8 +8,8 @@ import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
 
-object TimeTest{
-  def main(args: Array[String]): Unit ={
+object TimeTest {
+  def main(args: Array[String]): Unit = {
 
     val env = StreamExecutionEnvironment.getExecutionEnvironment
 
@@ -22,8 +22,8 @@ object TimeTest{
     import org.apache.flink.streaming.api.scala._
     val dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSS")
     text.flatMap(_.split("\\W+"))
-      .map(x=>{
-        println("data:"+x +" | time:" +dfs.format(System.currentTimeMillis()))
+      .map(x => {
+        println("data:" + x + " | time:" + dfs.format(System.currentTimeMillis()))
         (x, 1)
       })
       .keyBy(0)

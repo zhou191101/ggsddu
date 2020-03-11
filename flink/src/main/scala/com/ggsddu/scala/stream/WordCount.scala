@@ -22,7 +22,7 @@ object WordCount {
     val count = text.flatMap(_.toLowerCase().split("\\W+")).filter(_.nonEmpty)
       .map((_, 1))
       .keyBy(0)
-      .timeWindow(Time.seconds(2),Time.seconds(1))
+      .timeWindow(Time.seconds(2), Time.seconds(1))
       .sum(1)
     count.print()
 

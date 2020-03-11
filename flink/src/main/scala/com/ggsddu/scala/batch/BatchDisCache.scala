@@ -8,9 +8,9 @@ import org.apache.flink.configuration.Configuration
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 
-object BatchDisCache{
+object BatchDisCache {
 
-  def main(args: Array[String]): Unit ={
+  def main(args: Array[String]): Unit = {
 
     val env = ExecutionEnvironment.getExecutionEnvironment
 
@@ -19,21 +19,21 @@ object BatchDisCache{
 
     val data = env.fromElements("a", "b", "c", "d")
 
-    data.map(new RichMapFunction[String, String]{
+    data.map(new RichMapFunction[String, String] {
 
       private val list = new ListBuffer[String]()
 
-      override def open(parameters: Configuration): Unit ={
+      override def open(parameters: Configuration): Unit = {
         super.open(parameters)
         val file = getRuntimeContext.getDistributedCache.getFile("test2.txt")
         val lines = FileUtils.readLines(file)
-        for(line <- lines.asScala) {
+        for (line <- lines.asScala) {
           this.list.append(line)
           println("line: " + line)
         }
       }
 
-      override def map(in: String): String ={
+      override def map(in: String): String = {
         in
       }
     }).print()
