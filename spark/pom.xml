@@ -32,10 +32,13 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-graphx_${scala.binary.version}</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-yarn -->
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-yarn_2.11</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

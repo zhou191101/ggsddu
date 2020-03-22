@@ -22,10 +22,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <flink.version>1.7.2</flink.version>
+        <flink.version>1.10.0</flink.version>
         <spark.version>2.4.3</spark.version>
-        <scala.version>2.12.8</scala.version>
-        <scala.binary.version>2.12</scala.binary.version>
+        <scala.binary.version>2.11</scala.binary.version>
     </properties>
 
 
@@ -91,6 +90,16 @@
                 <version>${flink.version}</version>
                 <scope>${scope.value}</scope>
             </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-yarn -->
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-yarn_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>${scope.value}</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-java</artifactId>
@@ -150,13 +159,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>1.6.6</version>
-                <scope>${scope.value}</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-library</artifactId>
-                <version>${scala.version}</version>
                 <scope>${scope.value}</scope>
             </dependency>
 
