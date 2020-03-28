@@ -68,7 +68,7 @@ public class MessageConsumerWithPartition {
             }
         } finally {
             try {
-                kafkaConsumer.commitSync();
+                kafkaConsumer.commitSync(map);
             }finally {
                 kafkaConsumer.close();
             }
