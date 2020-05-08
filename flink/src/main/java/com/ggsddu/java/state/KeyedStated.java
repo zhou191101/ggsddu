@@ -1,10 +1,8 @@
 package com.ggsddu.java.state;
 
+import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
-import org.apache.flink.api.common.state.ListState;
-import org.apache.flink.api.common.state.ListStateDescriptor;
-import org.apache.flink.api.common.state.ValueState;
-import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.state.*;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -19,7 +17,7 @@ public class KeyedStated {
         env.fromElements(Tuple2.of("20138439", "ancdafa"), Tuple2.of("20138439", "ancfafa"),
                 Tuple2.of("20138439", "ancdsfa"), Tuple2.of("20138439", "anceafa"))
                 .keyBy(0)
-                .map(new ListStateRichMapFunction())
+                .map(new ReducingRichMapFunction())
                 .print();
         env.execute("keyed state");
     }
@@ -59,6 +57,33 @@ public class KeyedStated {
         @Override
         public Tuple2<String, String> map(Tuple2<String, String> value) throws Exception {
             eventTimes.add(Long.parseLong(value.f0));
+            return value;
+        }
+    }
+
+
+    private static class ReducingRichMapFunction extends RichMapFunction<Tuple2<String, String>, Tuple2<String, String>> {
+
+        private transient ReducingState<Long> count;
+
+        @Override
+        public void open(Configuration parameters) throws Exception {
+            ReducingStateDescriptor<Long> descriptor = new ReducingStateDescriptor<>("count", new ReduceFunction<Long>() {
+                @Override
+                public Long reduce(Long value1, Long value2) throws Exception {
+                    return value1 + value2;
+                }
+            }, Long.class);
+            count = getRuntimeContext().getReducingState(descriptor);
+        }
+
+        @Override
+        public Tuple2<String, String> map(Tuple2<String, String> value) throws Exception {
+            Long currentCount = count.get();
+            if (Objects.isNull(currentCount)) {
+                currentCount = 0L;
+            }
+            count.add(++currentCount);
             return value;
         }
     }
