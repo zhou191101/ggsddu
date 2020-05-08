@@ -18,7 +18,7 @@ public class KeyedStated {
         env.fromElements(Tuple2.of("20138439", "ancdafa"), Tuple2.of("20138439", "ancfafa"),
                 Tuple2.of("20138439", "ancdsfa"), Tuple2.of("20138439", "anceafa"))
                 .keyBy(0)
-                .map(new AggregatingStateRichMapFunction())
+                .map(new MapStateRichMapFunction())
                 .print();
         env.execute("keyed state");
     }
@@ -127,6 +127,28 @@ public class KeyedStated {
                 currentCounter = 0L;
             }
             counter.add(++currentCounter);
+            return value;
+        }
+    }
+
+    private static class MapStateRichMapFunction extends RichMapFunction<Tuple2<String, String>, Tuple2<String, String>> {
+
+        private transient MapState<Long, Long> counter;
+
+        @Override
+        public void open(Configuration parameters) throws Exception {
+            MapStateDescriptor<Long, Long> descriptor = new MapStateDescriptor<>("counter", Long.class, Long.class);
+            counter = getRuntimeContext().getMapState(descriptor);
+        }
+
+        @Override
+        public Tuple2<String, String> map(Tuple2<String, String> value) throws Exception {
+            if (counter.contains(Long.parseLong(value.f0))) {
+                Long count = counter.get(Long.parseLong(value.f0));
+                counter.put(Long.parseLong(value.f0), ++count);
+            } else {
+                counter.put(Long.parseLong(value.f0), 1L);
+            }
             return value;
         }
     }
