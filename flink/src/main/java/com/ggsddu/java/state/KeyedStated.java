@@ -1,5 +1,6 @@
 package com.ggsddu.java.state;
 
+import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.state.*;
@@ -17,7 +18,7 @@ public class KeyedStated {
         env.fromElements(Tuple2.of("20138439", "ancdafa"), Tuple2.of("20138439", "ancfafa"),
                 Tuple2.of("20138439", "ancdsfa"), Tuple2.of("20138439", "anceafa"))
                 .keyBy(0)
-                .map(new ReducingRichMapFunction())
+                .map(new AggregatingStateRichMapFunction())
                 .print();
         env.execute("keyed state");
     }
@@ -62,7 +63,7 @@ public class KeyedStated {
     }
 
 
-    private static class ReducingRichMapFunction extends RichMapFunction<Tuple2<String, String>, Tuple2<String, String>> {
+    private static class ReducingStateRichMapFunction extends RichMapFunction<Tuple2<String, String>, Tuple2<String, String>> {
 
         private transient ReducingState<Long> count;
 
@@ -84,6 +85,48 @@ public class KeyedStated {
                 currentCount = 0L;
             }
             count.add(++currentCount);
+            return value;
+        }
+    }
+
+    private static class AggregatingStateRichMapFunction extends RichMapFunction<Tuple2<String, String>, Tuple2<String, String>> {
+
+        private transient AggregatingState<Long, Long> counter;
+
+        @Override
+        public void open(Configuration parameters) throws Exception {
+            AggregatingStateDescriptor<Long, Long, Long> descriptor =
+                    new AggregatingStateDescriptor<>("counter", new AggregateFunction<Long, Long, Long>() {
+                        @Override
+                        public Long createAccumulator() {
+                            return 0L;
+                        }
+
+                        @Override
+                        public Long add(Long value, Long accumulator) {
+                            return value;
+                        }
+
+                        @Override
+                        public Long getResult(Long accumulator) {
+                            return accumulator;
+                        }
+
+                        @Override
+                        public Long merge(Long a, Long b) {
+                            return a + b;
+                        }
+                    }, Long.class);
+            counter = getRuntimeContext().getAggregatingState(descriptor);
+        }
+
+        @Override
+        public Tuple2<String, String> map(Tuple2<String, String> value) throws Exception {
+            Long currentCounter = counter.get();
+            if (Objects.isNull(currentCounter)) {
+                currentCounter = 0L;
+            }
+            counter.add(++currentCounter);
             return value;
         }
     }
