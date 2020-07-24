@@ -17,6 +17,7 @@
         <module>kafka</module>
         <module>design-patterns</module>
         <module>spring-test</module>
+        <module>hbase</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
