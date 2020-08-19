@@ -30,7 +30,9 @@ object Operation {
     //    select(spark)
     //update(spark, dataGen)
 
-    incrementQuery(spark)
+    //    incrementQuery(spark)
+
+    timeQuery(spark)
 
   }
 
@@ -94,5 +96,28 @@ object Operation {
     tripsIncrementalDF.createOrReplaceTempView("hudi_trips_incremental")
 
     spark.sql("select `_hoodie_commit_time`, fare, begin_lon, begin_lat, ts from  hudi_trips_incremental where fare > 20.0").show()
+  }
+
+
+  private def timeQuery(spark: SparkSession): Unit = {
+    val beginTime = "000" // All commits > this time
+    import spark.implicits._
+    spark.
+      read.
+      format("hudi").
+      load(basePath + "/*/*/*/*").
+      createOrReplaceTempView("hudi_trips_snapshot")
+
+    val commits = spark.sql("select distinct(_hoodie_commit_time) as commitTime from  hudi_trips_snapshot order by commitTime")
+      .map(k => k.getString(0)).take(50)
+    val endTime = commits(commits.length - 2)
+    //incrementally query data
+    val tripsPointInTimeDF = spark.read.format("hudi").
+      option(QUERY_TYPE_OPT_KEY, QUERY_TYPE_INCREMENTAL_OPT_VAL).
+      option(BEGIN_INSTANTTIME_OPT_KEY, beginTime).
+      option(END_INSTANTTIME_OPT_KEY, endTime).
+      load(basePath)
+    tripsPointInTimeDF.createOrReplaceTempView("hudi_trips_point_in_time")
+    spark.sql("select `_hoodie_commit_time`, fare, begin_lon, begin_lat, ts from hudi_trips_point_in_time where fare > 20.0").show()
   }
 }
