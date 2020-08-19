@@ -27,8 +27,10 @@ object Operation {
 
     // insertData(spark, dataGen)
 
-    // select(spark)
-    update(spark, dataGen)
+    //    select(spark)
+    //update(spark, dataGen)
+
+    incrementQuery(spark)
 
   }
 
@@ -70,5 +72,27 @@ object Operation {
       option(TABLE_NAME, tableName).
       mode(Append).
       save(basePath)
+  }
+
+  private def incrementQuery(spark: SparkSession): Unit = {
+    spark.
+      read.
+      format("hudi").
+      load(basePath + "/*/*/*/*").
+      createOrReplaceTempView("hudi_trips_snapshot")
+
+    import spark.implicits._
+    val commits = spark.sql("select distinct(_hoodie_commit_time) as commitTime from  hudi_trips_snapshot order by commitTime")
+      .map(k => k.getString(0)).take(50)
+    val beginTime = commits(commits.length - 2) // commit time we are interested in
+
+    // incrementally query data
+    val tripsIncrementalDF = spark.read.format("hudi").
+      option(QUERY_TYPE_OPT_KEY, QUERY_TYPE_INCREMENTAL_OPT_VAL).
+      option(BEGIN_INSTANTTIME_OPT_KEY, beginTime).
+      load(basePath)
+    tripsIncrementalDF.createOrReplaceTempView("hudi_trips_incremental")
+
+    spark.sql("select `_hoodie_commit_time`, fare, begin_lon, begin_lat, ts from  hudi_trips_incremental where fare > 20.0").show()
   }
 }
