@@ -27,7 +27,8 @@ object Operation {
 
     // insertData(spark, dataGen)
 
-    select(spark)
+    // select(spark)
+    update(spark, dataGen)
 
   }
 
@@ -58,7 +59,16 @@ object Operation {
   }
 
 
-  private def update(spark: SparkSession): Unit = {
-
+  private def update(spark: SparkSession, dataGen: DataGenerator): Unit = {
+    val updates = convertToStringList(dataGen.generateInserts(10))
+    val df = spark.read.json(spark.sparkContext.parallelize(updates, 2))
+    df.write.format("hudi").
+      options(getQuickstartWriteConfigs).
+      option(PRECOMBINE_FIELD_OPT_KEY, "ts").
+      option(RECORDKEY_FIELD_OPT_KEY, "uuid").
+      option(PARTITIONPATH_FIELD_OPT_KEY, "partitionpath").
+      option(TABLE_NAME, tableName).
+      mode(Append).
+      save(basePath)
   }
 }
