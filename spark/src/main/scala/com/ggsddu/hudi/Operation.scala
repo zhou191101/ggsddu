@@ -1,12 +1,13 @@
 package com.ggsddu.hudi
 
 import org.apache.hudi.QuickstartUtils._
+
 import scala.collection.JavaConversions._
 import org.apache.spark.sql.SaveMode._
 import org.apache.hudi.DataSourceReadOptions._
 import org.apache.hudi.DataSourceWriteOptions._
 import org.apache.hudi.config.HoodieWriteConfig._
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object Operation {
 
@@ -24,7 +25,9 @@ object Operation {
 
     val dataGen = new DataGenerator
 
-    insertData(spark, dataGen)
+    // insertData(spark, dataGen)
+
+    select(spark)
 
   }
 
@@ -42,4 +45,20 @@ object Operation {
       save(basePath)
   }
 
+  private def select(spark: SparkSession): Unit = {
+
+    val tripSnapshotDF = spark
+      .read
+      .format("hudi")
+      .load(basePath + "/*/*/*/*")
+
+    tripSnapshotDF.createOrReplaceTempView("hudi_trips_snapshot")
+    spark.sql("select fare, begin_lon, begin_lat, ts from  hudi_trips_snapshot where fare > 20.0").show()
+    spark.sql("select _hoodie_commit_time, _hoodie_record_key, _hoodie_partition_path, rider, driver, fare from  hudi_trips_snapshot").show()
+  }
+
+
+  private def update(spark: SparkSession): Unit = {
+
+  }
 }
