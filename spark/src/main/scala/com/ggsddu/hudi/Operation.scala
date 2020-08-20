@@ -27,13 +27,13 @@ object Operation {
 
     // insertData(spark, dataGen)
 
-    //    select(spark)
-    //update(spark, dataGen)
+    // select(spark)
+    // update(spark, dataGen)
 
-    //    incrementQuery(spark)
+    // incrementQuery(spark)
 
-    timeQuery(spark)
-
+    // timeQuery(spark)
+    delete(spark, dataGen)
   }
 
 
@@ -119,5 +119,44 @@ object Operation {
       load(basePath)
     tripsPointInTimeDF.createOrReplaceTempView("hudi_trips_point_in_time")
     spark.sql("select `_hoodie_commit_time`, fare, begin_lon, begin_lat, ts from hudi_trips_point_in_time where fare > 20.0").show()
+  }
+
+  private def delete(spark: SparkSession, dataGen: DataGenerator): Unit = {
+    spark.
+      read.
+      format("hudi").
+      load(basePath + "/*/*/*/*").
+      createOrReplaceTempView("hudi_trips_snapshot")
+    println(spark.sql("select uuid, partitionpath from hudi_trips_snapshot").count())
+    // fetch two records to be deleted
+    val ds = spark.sql("select uuid, partitionpath as partitionPath from hudi_trips_snapshot").limit(2)
+
+    // issue deletes
+    val deletes = dataGen.generateDeletes(ds.collectAsList())
+    val df = spark
+      .read
+      .json(spark.sparkContext.parallelize(deletes, 2))
+
+    df
+      .write
+      .format("hudi")
+      .options(getQuickstartWriteConfigs)
+      .option(OPERATION_OPT_KEY, "delete")
+      .option(PRECOMBINE_FIELD_OPT_KEY, "ts")
+      .option(RECORDKEY_FIELD_OPT_KEY, "uuid")
+      .option(PARTITIONPATH_FIELD_OPT_KEY, "partitionpath")
+      .option(TABLE_NAME, tableName)
+      .mode(Append)
+      .save(basePath)
+
+    // run the same read query as above.
+    val roAfterDeleteViewDF = spark
+      .read
+      .format("hudi")
+      .load(basePath + "/*/*/*/*")
+
+    roAfterDeleteViewDF.registerTempTable("hudi_trips_snapshot")
+    // fetch should return (total - 2) records
+    println(spark.sql("select uuid, partitionpath from hudi_trips_snapshot").count())
   }
 }
