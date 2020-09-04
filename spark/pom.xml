@@ -50,6 +50,12 @@
             <artifactId>spark-avro_${scala.binary.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.carbondata/carbondata-hive -->
+        <dependency>
+            <groupId>org.apache.carbondata</groupId>
+            <artifactId>carbondata-hive</artifactId>
+            <version>1.6.1</version>
+        </dependency>
 
     </dependencies>
 

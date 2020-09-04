@@ -7,13 +7,14 @@ import org.apache.spark.sql.SaveMode._
 import org.apache.hudi.DataSourceReadOptions._
 import org.apache.hudi.DataSourceWriteOptions._
 import org.apache.hudi.config.HoodieWriteConfig._
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object Operation {
 
   private val tableName = "hudi_trips_cow"
   private val basePath = "file:///Users/zhoupeng/project/ggsddu/tmp/hudi_trips_cow"
-
+  Logger.getLogger("org").setLevel(Level.ERROR)
   def main(args: Array[String]): Unit = {
 
     val spark = SparkSession
@@ -33,7 +34,7 @@ object Operation {
     // incrementQuery(spark)
 
     // timeQuery(spark)
-    delete(spark, dataGen)
+     delete(spark, dataGen)
   }
 
 
@@ -58,8 +59,8 @@ object Operation {
       .load(basePath + "/*/*/*/*")
 
     tripSnapshotDF.createOrReplaceTempView("hudi_trips_snapshot")
-    spark.sql("select fare, begin_lon, begin_lat, ts from  hudi_trips_snapshot where fare > 20.0").show()
-    spark.sql("select _hoodie_commit_time, _hoodie_record_key, _hoodie_partition_path, rider, driver, fare from  hudi_trips_snapshot").show()
+    spark.sql("select fare, begin_lon, begin_lat, ts from  hudi_trips_snapshot where fare > 20.0").show(true)
+    spark.sql("select _hoodie_commit_time, _hoodie_record_key, _hoodie_partition_path, rider, driver, fare from  hudi_trips_snapshot").show(false)
   }
 
 
@@ -110,7 +111,7 @@ object Operation {
 
     val commits = spark.sql("select distinct(_hoodie_commit_time) as commitTime from  hudi_trips_snapshot order by commitTime")
       .map(k => k.getString(0)).take(50)
-    val endTime = commits(commits.length - 2)
+    val endTime = commits(commits.length - 1)
     //incrementally query data
     val tripsPointInTimeDF = spark.read.format("hudi").
       option(QUERY_TYPE_OPT_KEY, QUERY_TYPE_INCREMENTAL_OPT_VAL).
@@ -133,6 +134,7 @@ object Operation {
 
     // issue deletes
     val deletes = dataGen.generateDeletes(ds.collectAsList())
+    println(deletes)
     val df = spark
       .read
       .json(spark.sparkContext.parallelize(deletes, 2))
