@@ -7,16 +7,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="flink" />
+        <module name="jvm" />
+        <module name="spring-test" />
+        <module name="algorithms" />
+        <module name="java" />
+        <module name="spark" />
+        <module name="designpatterns" />
+        <module name="kafka" />
         <module name="hbase" />
         <module name="concurrency" />
-        <module name="jvm" />
-        <module name="designpatterns" />
-        <module name="spark" />
-        <module name="kafka" />
-        <module name="spring-test" />
         <module name="design-patterns" />
-        <module name="java" />
-        <module name="algorithms" />
       </profile>
     </annotationProcessing>
   </component>
