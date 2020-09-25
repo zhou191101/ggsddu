@@ -43,7 +43,7 @@ object YarnStatusQuery {
           .substring(15)
           .trim + "/jobs/overview"
         // appStatus.foreach(println)
-        println(url)
+        println(info(5).trim)
         val finalState = appStatus.filter(_.trim.startsWith("Final-State"))(0).split(":")(1).trim
         val startTime = appStatus.filter(_.trim.startsWith("Start-Time"))(0).split(":")(1).trim
         val finishTime = appStatus.filter(_.trim.startsWith("Finish-Time"))(0).split(":")(1).trim
