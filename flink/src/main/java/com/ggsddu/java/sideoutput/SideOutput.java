@@ -31,8 +31,10 @@ public class SideOutput {
 
         DataStreamSource<Tuple3<Integer, Integer, Integer>> source = env.fromCollection(data);
 
-        OutputTag<Tuple3<Integer, Integer, Integer>> zero = new OutputTag<Tuple3<Integer, Integer, Integer>>("zero"){};
-        OutputTag<Tuple3<Integer, Integer, Integer>> one = new OutputTag<Tuple3<Integer, Integer, Integer>>("one"){};
+        OutputTag<Tuple3<Integer, Integer, Integer>> zero = new OutputTag<Tuple3<Integer, Integer, Integer>>("zero") {
+        };
+        OutputTag<Tuple3<Integer, Integer, Integer>> one = new OutputTag<Tuple3<Integer, Integer, Integer>>("one") {
+        };
 
         SingleOutputStreamOperator<Tuple3<Integer, Integer, Integer>> processStream = source.process(new ProcessFunction<Tuple3<Integer, Integer, Integer>, Tuple3<Integer, Integer, Integer>>() {
             @Override

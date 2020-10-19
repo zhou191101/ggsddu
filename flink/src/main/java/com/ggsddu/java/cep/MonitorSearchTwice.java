@@ -54,7 +54,7 @@ public class MonitorSearchTwice {
             public String select(Map<String, List<Tuple3<String, String, Long>>> map) throws Exception {
                 final List<Tuple3<String, String, Long>> middle = map.get("middle");
 
-                return middle.get(0).f0 +": "+middle.get(0).f2+": "+"连续搜索两次帽子";
+                return middle.get(0).f0 + ": " + middle.get(0).f2 + ": " + "连续搜索两次帽子";
             }
         }).printToErr();
 
