@@ -1,8 +1,5 @@
 package com.ggsddu.scala.remote
 
-import org.apache.flink.client.cli.CliFrontend
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
-import org.apache.flink.streaming.api.windowing.time.Time
 
 object Remote {
 

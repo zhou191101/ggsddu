@@ -1,7 +1,6 @@
 package com.ggsddu.java.cli;
 
-import org.apache.flink.client.cli.AbstractCustomCommandLine;
-import org.apache.flink.client.cli.DefaultCLI;
+
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.configuration.GlobalConfiguration;
 
@@ -14,7 +13,4 @@ public abstract class BaseClient {
         return GlobalConfiguration.loadConfiguration(new File(confFile).getAbsoluteFile().getParent());
     }
 
-    static AbstractCustomCommandLine getCli(Configuration configuration) {
-        return new DefaultCLI(configuration);
-    }
 }
