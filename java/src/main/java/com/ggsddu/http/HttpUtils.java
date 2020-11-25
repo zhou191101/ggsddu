@@ -3,10 +3,7 @@ package com.ggsddu.http;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.*;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -102,6 +99,31 @@ public class HttpUtils {
             stringEntity.setContentEncoding("UTF-8");
             httpPut.setEntity(stringEntity);
             response = client.execute(httpPut);
+
+            result = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+        } catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll(client, response);
+        }
+
+        return result;
+    }
+
+    public static String doDelete(String url, String auth) {
+        CloseableHttpClient client = null;
+        CloseableHttpResponse response = null;
+        String result = null;
+        try {
+
+            PoolingHttpClientConnectionManager connectionManager = connectionManagerBuilder();
+            client = HttpClients.custom().setConnectionManager(connectionManager).build();
+
+            HttpDelete httpDelete = new HttpDelete(url);
+            httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + auth);
+
+            response = client.execute(httpDelete);
 
             result = EntityUtils.toString(response.getEntity(), "UTF-8");
 
