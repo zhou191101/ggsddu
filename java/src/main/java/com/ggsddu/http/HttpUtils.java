@@ -6,6 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -72,6 +73,35 @@ public class HttpUtils {
             stringEntity.setContentEncoding("UTF-8");
             httpPost.setEntity(stringEntity);
             response = client.execute(httpPost);
+
+            result = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+        } catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll(client, response);
+        }
+
+        return result;
+    }
+
+    public static String doPut(String url, String auth, String body) {
+        CloseableHttpClient client = null;
+        CloseableHttpResponse response = null;
+        String result = null;
+        try {
+
+            PoolingHttpClientConnectionManager connectionManager = connectionManagerBuilder();
+            client = HttpClients.custom().setConnectionManager(connectionManager).build();
+
+            HttpPut httpPut = new HttpPut(url);
+            httpPut.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + auth);
+
+            httpPut.setHeader(HttpHeaders.CONTENT_TYPE, "applicatioon/json");
+            StringEntity stringEntity = new StringEntity(body, "UTF-8");
+            stringEntity.setContentEncoding("UTF-8");
+            httpPut.setEntity(stringEntity);
+            response = client.execute(httpPut);
 
             result = EntityUtils.toString(response.getEntity(), "UTF-8");
 
