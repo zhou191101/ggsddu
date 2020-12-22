@@ -19,6 +19,7 @@
         <module>spring-test</module>
         <module>hbase</module>
         <module>hadoop</module>
+        <module>lucene</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,6 +29,8 @@
         <spark.version>2.4.3</spark.version>
         <scala.binary.version>2.11</scala.binary.version>
     </properties>
+
+    
 
 
     <dependencyManagement>
