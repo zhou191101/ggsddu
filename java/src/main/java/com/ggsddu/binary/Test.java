@@ -7,5 +7,6 @@ public class Test {
 
         System.out.println(Arrays.toString("asa".getBytes()));
         System.out.println(Integer.toBinaryString(100));
+        System.out.println('\001');
     }
 }

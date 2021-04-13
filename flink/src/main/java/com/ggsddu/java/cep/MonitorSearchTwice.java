@@ -21,8 +21,6 @@ public class MonitorSearchTwice {
 
 
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-
         final DataStreamSource<Tuple3<String, String, Long>> source = env.fromElements(
                 Tuple3.of("Tom", "帽子", 1L),
                 Tuple3.of("Jerry", "衣服", 2L),
@@ -30,7 +28,8 @@ public class MonitorSearchTwice {
                 Tuple3.of("Jerry", "帽子", 1L),
                 Tuple3.of("Tom", "衣服", 1L));
 
-        final Pattern<Tuple3<String, String, Long>, Tuple3<String, String, Long>> pattern = Pattern.<Tuple3<String, String, Long>>begin("start")
+        final Pattern<Tuple3<String, String, Long>, Tuple3<String, String, Long>> pattern =
+                Pattern.<Tuple3<String, String, Long>>begin("start")
                 .where(new SimpleCondition<Tuple3<String, String, Long>>() {
                     @Override
                     public boolean filter(Tuple3<String, String, Long> items) throws Exception {
