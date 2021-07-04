@@ -19,12 +19,15 @@ public class Test {
         int position = 0;
         int r = position + 1;
         int l = position - 1;
+
         while (position < s.length() - 1) {
+            int ss = position;
             while (r < s.length() && s.charAt(position) == s.charAt(r)) {
-                if ((end - start) < (r + 1 - position)) {
-                    start = position;
+                if ((end - start) < (r + 1 - ss)) {
+                    start = ss;
                     end = r + 1;
                 }
+                position++;
                 r++;
             }
 
